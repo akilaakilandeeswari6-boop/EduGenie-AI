@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduGenie: AI Learning Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to EduGenie 🧞‍♂️</h1>
+        <p>Your personal AI tutor for learning support!</p>
+
+        <form id="ai-form" onsubmit="submitForm(event)">
+            <!-- Task Dropdown -->
+            <label for="task"><strong>Select a Task:</strong></label>
+            <select id="task" required>
+                <option value="explain">Explain a Concept</option>
+                <option value="qa">Q&A (Ask a Question)</option>
+                <option value="quiz">Generate a Quiz</option>
+                <option value="summarize">Summarize Text</option>
+                <option value="recommend">Recommend Learning Path</option>
+            </select>
+
+            <!-- Text Area for User Input -->
+            <label for="userInput"><strong>Enter your text/topic:</strong></label>
+            <textarea id="userInput" rows="5" placeholder="Type here..." required></textarea>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn">Generate Magic ✨</button>
+        </form>
+
+        <!-- Result Container appearing below input box in real-time -->
+        <div id="result-container" class="hidden">
+            <h3>Result:</h3>
+            <div id="result" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // Prevents page reload
+            
+            const task = document.getElementById("task").value;
+            const input = document.getElementById("userInput").value;
+            const resultDiv = document.getElementById("result");
+            const resultContainer = document.getElementById("result-container");
+            const submitBtn = document.getElementById("submitBtn");
+
+            // Show loading state
+            resultContainer.classList.remove("hidden");
+            resultDiv.innerHTML = "<p><em>EduGenie is thinking...</em></p>";
+            submitBtn.disabled = true;
+
+            try {
+                let response;
+                let data;
+
+                // Route to the correct FastAPI endpoint based on Epic 2 code
+                if (task === "qa") {
+                    response = await fetch(`/qa?question=${encodeURIComponent(input)}`);
+                    data = await response.json();
+                    resultDiv.innerHTML = `<p>${data.answer.replace(/\n/g, '<br>')}</p>`;
+                } else if (task === "explain") {
+                    response = await fetch('/explain/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ topic: input })
+                    });
+                    data = await response.json();
+                    resultDiv.innerHTML = `<p>${data.explanation}</p>`;
+                } else if (task === "quiz") {
+    response = await fetch('/quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: input })
+    });
+    data = await response.json();
+    
+    let quizList = data.quiz;
+    if (typeof quizList === "string") {
+        try {
+            quizList = JSON.parse(quizList);
+        } catch (e) {
+            // fallback if string cannot be parsed
+        }
+    }
+
+    if (Array.isArray(quizList)) {
+        let htmlContent = `<div class="quiz-container">`;
+        quizList.forEach((q, qIndex) => {
+            htmlContent += `
+                <div class="quiz-card" style="margin-bottom: 20px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <p style="text-align: left; font-weight: bold; margin-bottom: 10px; color: #1e293b;">
+                        Q${qIndex + 1}. ${q.question}
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+            `;
+            q.options.forEach((opt) => {
+                const escapedOpt = opt.replace(/'/g, "\\'");
+                const escapedAns = q.answer.replace(/'/g, "\\'");
+                htmlContent += `
+                    <button type="button" class="quiz-opt-btn" 
+                        onclick="checkAnswer(this, '${escapedOpt}', '${escapedAns}', 'feedback-${qIndex}')"
+                        style="text-align: left; background: #f8fafc; color: #334155; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                        ${opt}
+                    </button>
+                `;
+            });
+            htmlContent += `
+                    </div>
+                    <div id="feedback-${qIndex}" style="margin-top: 8px; font-weight: bold; font-size: 14px;"></div>
+                </div>
+            `;
+        });
+        htmlContent += `</div>`;
+        resultDiv.innerHTML = htmlContent;
+    } else {
+        resultDiv.innerHTML = `<pre>${JSON.stringify(data.quiz, null, 2)}</pre>`;
+    }
+} else if (task === "summarize") {
+                    response = await fetch('/summarize/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: input })
+                    });
+                    data = await response.json();
+                    resultDiv.innerHTML = `<p>${data.summary}</p>`;
+                } else if (task === "recommend") {
+                    response = await fetch(`/learn/recommendations?topic=${encodeURIComponent(input)}`);
+                    data = await response.json();
+                    resultDiv.innerHTML = `<p>${data.recommendation.replace(/\n/g, '<br>')}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">⚠️ Error connecting to server.</p>`;
+            }
+            
+            submitBtn.disabled = false;
+        }
+        function checkAnswer(button, selected, correct, feedbackId) {
+    const parentCard = button.parentElement;
+    const allButtons = parentCard.querySelectorAll("button");
+    const feedbackDiv = document.getElementById(feedbackId);
+
+    // Disable all options in this question after clicking
+    allButtons.forEach(btn => btn.disabled = true);
+
+    if (selected.trim() === correct.trim()) {
+        button.style.backgroundColor = "#dcfce7";
+        button.style.borderColor = "#22c55e";
+        button.style.color = "#15803d";
+        feedbackDiv.innerHTML = `<span style="color: #16a34a;">✔ Correct!</span>`;
+    } else {
+        button.style.backgroundColor = "#fee2e2";
+        button.style.borderColor = "#ef4444";
+        button.style.color = "#b91c1c";
+        feedbackDiv.innerHTML = `<span style="color: #dc2626;">✖ Incorrect. Correct answer: ${correct}</span>`;
+    }
+}
+    </script>
+</body>
+</html>

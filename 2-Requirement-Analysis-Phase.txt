@@ -1,0 +1,27 @@
+1. Functional Requirements:
+
+User Authentication: Secure registration and login functionality for individual learners.
+
+Syllabus & Goal Input: Forms for users to input their subjects, topics, and target completion dates.
+
+AI Integration: Real-time API connection to an LLM (e.g., Google Gemini) to generate study plans and answer academic queries.
+
+Dashboard & History: A user dashboard to track learning progress, view saved study plans, and access past AI interactions.
+
+2. Non-Functional Requirements:
+
+Performance: The AI response generation must complete within 3-5 seconds.
+
+Responsiveness: The UI must be fully mobile-responsive for students accessing the platform via smartphones and tablets.
+
+Security: User passwords must be hashed, and API keys must be securely stored in environment variables.
+
+3. Technology Stack:
+
+Frontend: HTML5, CSS3 (Tailwind CSS), Vanilla JavaScript.
+
+Backend: Python, FastAPI.
+
+Database: SQLite or PostgreSQL (for user data and session history).
+
+AI Integration: Google GenAI SDK (Gemini-3.6-flash).

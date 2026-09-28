@@ -1,0 +1,21 @@
+Phase 1: Brainstorming & Ideation Phase
+Project Title: EduGenie AI – Your Smart Learning Companion
+Project Overview: EduGenie AI is an artificial intelligence-powered educational platform designed to act as a virtual tutor and study planner. It helps students optimize their learning by generating personalized study schedules, simplifying complex academic concepts, and recommending targeted learning resources.
+
+Problem Statement:
+
+Students frequently struggle with time management and creating structured study routines.
+
+Access to immediate, personalized tutoring for complex subjects is often expensive or unavailable.
+
+Learners experience information overload and have difficulty finding concise, verified academic resources.
+
+Proposed Solution:
+
+AI Study Planner: Automatically generates tailored timetables based on exam dates, syllabus size, and user availability.
+
+Smart Concept Simplifier: Integrates with generative AI to break down complex technical topics into easy-to-understand summaries.
+
+Resource Curator: Recommends verified articles, coding documentation, and video links based on the user's current learning topic.
+
+Target Audience: High school students, university undergraduates, and self-taught professionals.

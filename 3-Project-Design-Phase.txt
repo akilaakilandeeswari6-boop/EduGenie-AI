@@ -1,0 +1,22 @@
+1. System Architecture:
+The project follows a standard Client-Server architecture. The frontend (Client) sends HTTP POST requests containing user study preferences to the FastAPI backend (Server). The backend processes the authentication, interacts with the external Gemini AI API to fetch educational insights, formats the response into JSON, and returns it to the client for rendering.
+
+2. Database Schema Design:
+
+Users Table: user_id (PK), username, email, hashed_password, created_at.
+
+Study_Plans Table: plan_id (PK), user_id (FK), subject, duration, generated_schedule, timestamp.
+
+Queries Table: query_id (PK), user_id (FK), topic, ai_explanation, timestamp.
+
+3. UI/UX Concept:
+
+Theme: Academic and clean (Primary colors: Deep Blue, White, and Soft Green).
+
+Wireframes mapping:
+
+Landing Page: Hero section explaining the AI features, with a call-to-action to register.
+
+Dashboard: Card-based layout displaying active study plans and a quick-chat input box for instant concept simplification.
+
+Results Page: Structured tabular layout separating AI explanations from suggested external resource links.

@@ -1,0 +1,24 @@
+1. Development Milestones & Timeline:
+
+Sprint 1 (Days 1-3): Project setup, environment configuration, database initialization, and Git repository creation.
+
+Sprint 2 (Days 4-7): Backend API routing, user authentication (JWT), and session management.
+
+Sprint 3 (Days 8-11): Integration of the Gemini AI API, prompt engineering for educational outputs, and JSON parsing.
+
+Sprint 4 (Days 12-16): Frontend development, Tailwind CSS styling, and connecting HTML templates to backend endpoints.
+
+Sprint 5 (Days 17-20): End-to-end testing, bug fixing, and final documentation.
+
+2. Risk Management:
+
+Risk: AI API rate limits or latency delays.
+
+Mitigation: Implement a loading state on the frontend to improve UX and add error-handling blocks in the backend to manage timeout exceptions.
+
+Risk: Scope creep during UI development.
+
+Mitigation: Strictly follow the initial wireframes and defer advanced features (like PDF uploads) to future updates.
+
+3. Delivery Strategy:
+Code will be version-controlled using Git, with frequent commits categorized by feature. The final build will be tested locally using Uvicorn before preparing the demonstration assets.
